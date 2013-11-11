@@ -39,7 +39,7 @@ if __name__ == '__main__':
         device_list.append(str(dev.nodeName))
     
     commandExec = CommandExec(devices=device_list)
-    CommandExec.run() # Commando exposes this to start the event loop
+    commandExec.run() # Commando exposes this to start the event loop
 
     print '\nResults:'
     strout = commandExec.results
