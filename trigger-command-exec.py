@@ -14,7 +14,23 @@ import re
 
 
 def make_dns(hostname, interface, ip_address):
-    print hostname, interface, ip_address
+    #print hostname, interface, ip_address
+    interface_name = ''
+    host = hostname.split('.')
+    if 'Ten' in interface:
+        interface_name = re.sub(r'([0-9]+)/([0-9]+)',r'te\1-\2',interface)
+    elif 'Gig' in interface:
+        interface_name = re.sub(r'([0-9]+)/([0-9]+)',r'ge\1-\2',interface)
+    elif 'Fast' in interface:
+        interface_name = re.sub(r'([0-9]+)/([0-9]+)',r'fa\1-\2',interface)
+    elif 'Port-channel' in interface:
+        interface_name = re.sub(r'Port-channel([0-9]+)',r'po\1-\2',interface)
+    elif 'Vlan' in interface:
+        interface_name = re.sub(r'Vlan([0-9]+)',r'vl\1',interface)
+    else:
+        pass
+
+    print 'dnscmd.exe sarad005.jtax.com /RecordAdd jtax.com ' + interface_name + '-' + host[0] + '.' + host[1] + ' A ' + ip_address
 
 def parse_results(cmdOutput):
     for key, value in cmdOutput.iteritems():
@@ -54,13 +70,12 @@ class CommandExec(Commando):
 if __name__ == '__main__':
     
 
-    device_list = ['pdc-bar-1.net.jtax.com']
-    """
+    #device_list = ['pdc-bar-1.net.jtax.com']
     device_list = []
     for i in nd:
         dev = nd[i]
         device_list.append(str(dev.nodeName))
-    """ 
+    
     commandExec = CommandExec(devices=device_list)
     commandExec.run() # Commando exposes this to start the event loop
 
