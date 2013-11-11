@@ -26,13 +26,12 @@ class ShowClock(Commando):
             self.results[device.nodeName][cmd] = result
 
 if __name__ == '__main__':
-    device_list = ['sar-mas-1.sar.net.jtax.com', 'sar-mas-2.sar.net.jtax.com']
-    """
+    
     device_list = []
     for i in nd:
         dev = nd[i]
         device_list.append(str(dev.nodeName))
-    """
+    
     showclock = ShowClock(devices=device_list)
     showclock.run() # Commando exposes this to start the event loop
 
