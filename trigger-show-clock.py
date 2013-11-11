@@ -1,3 +1,13 @@
+#!/usr/bin/env python2
+'''
+Description:        This script when used with Trigger will run a command across all Cisco devices and return the output.  most of this script comes straight from the Trigger documentation.
+'''
+__author__ = 'Clay Curtis'
+__license__ = 'MIT License'
+__contact__ = 'clay584 with gmail'
+__version__ = 1.0
+
+
 from trigger.cmds import Commando
 from trigger.netdevices import NetDevices
 import simplejson as json
@@ -6,22 +16,18 @@ import re
 nd = NetDevices()
 
 
-class ShowClock(Commando):
-    """Execute 'show clock' on a list of Cisco devices."""
+class CommandExec(Commando):
     vendors = ['cisco']
     commands = ['show clock']
 
     def to_cisco(self, device, commands=None, extra=None):
-        """Passes the commands as-is to the device"""
         print "Sending %r to %s" % (self.commands, device)
         return self.commands
 
     def from_cisco(self, results, device):
-        """Capture the command output and move on"""
         if device.nodeName not in self.results:
             self.results[device.nodeName] = {}
 
-        # Store each command and its result for this device
         for cmd, result in zip(self.commands, results):
             self.results[device.nodeName][cmd] = result
 
@@ -32,13 +38,12 @@ if __name__ == '__main__':
         dev = nd[i]
         device_list.append(str(dev.nodeName))
     
-    showclock = ShowClock(devices=device_list)
-    showclock.run() # Commando exposes this to start the event loop
+    commandExec = CommandExec(devices=device_list)
+    CommandExec.run() # Commando exposes this to start the event loop
 
     print '\nResults:'
-    strout = showclock.results
-    #print(json.dumps(strout, sort_keys=True, indent=4 * ' '))
-    for key, value in showclock.results.iteritems():
+    strout = commandExec.results
+    for key, value in commandExec.results.iteritems():
         newvalue = re.sub(r"^[^:]+ '(.*)'}$",r"\1",str(value))
         print newvalue
     
