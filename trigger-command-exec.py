@@ -27,6 +27,8 @@ def make_dns(hostname, interface, ip_address):
         interface_name = re.sub(r'Port-channel([0-9]+)',r'po\1-\2',interface)
     elif 'Vlan' in interface:
         interface_name = re.sub(r'Vlan([0-9]+)',r'vl\1',interface)
+    elif 'ethernet' in interface:
+        interface_name = re.sub(r'ethernet([0-9]+)',r'e\1',interface)
     else:
         pass
 
