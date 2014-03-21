@@ -1,11 +1,6 @@
 #!/usr/bin/env python2
-'''
-Description:        This script when used with Trigger will run a command across all Cisco devices and return the output.  most of this script comes straight from the Trigger documentation.
-'''
-__author__ = 'Clay Curtis'
-__license__ = 'MIT License'
-__contact__ = 'clay584 with gmail'
-__version__ = 1.0
+#This will log into all devices and grab IP interfaces and output the commands to build forward and reverse DNS records for all interfaces.
+#You can take the output and paste it directly into a Windows domain controller to create all of your DNS records.
 
 
 from trigger.cmds import Commando
@@ -32,7 +27,7 @@ def make_dns(hostname, interface, ip_address):
     else:
         pass
 
-    print 'dnscmd.exe sarad005.jtax.com /RecordAdd jtax.com ' + interface_name + '-' + host[0] + '.' + host[1] + ' A ' + ip_address
+    print 'dnscmd.exe domaincontroller.example.com /RecordAdd example.com ' + interface_name + '-' + host[0] + '.' + host[1] + ' /CreatePTR' + ' A ' + ip_address
 
 def parse_results(cmdOutput):
     for key, value in cmdOutput.iteritems():
@@ -72,7 +67,6 @@ class CommandExec(Commando):
 if __name__ == '__main__':
     
 
-    #device_list = ['pdc-bar-1.net.jtax.com']
     device_list = []
     for i in nd:
         dev = nd[i]
